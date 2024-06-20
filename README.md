@@ -1,3 +1,3 @@
 # Agri-enhancement-System
 
-To run the program use App.py using any code editors.✌️ 
+To run the program run the App.py file using any code editors.✌️ 
