@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Element Check</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: rgb(238, 174, 202);
+      background: radial-gradient(circle,
+          rgba(238, 174, 202, 1) 0%,
+          rgba(148, 187, 233, 1) 100%);
+      margin: 0;
+      padding-top: 20px;
+      /* display: flex;
+      flex-direction: column; */
+    }
+
+    .container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset,
+        rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;
+      text-align: left;
+      width: 75%;
+      margin: auto;
+    }
+
+    .note {
+      border: 1px solid #3e89cc;
+      background-color: #c4edff;
+      color: #000;
+      /* White text */
+      margin-bottom: 20px;
+      border-radius: 3px;
+      width: 95%;
+    }
+
+    .note p {
+      margin-left: 20px;
+    }
+
+    .green_head {
+      height: 23px;
+      width: initial;
+      background-color: #316ea5;
+      color: #fff;
+      justify-content: center;
+      padding-left: 8px;
+      padding-top: 4px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input,
+    select {
+      padding: 8px;
+      margin-bottom: 10px;
+      width: calc(100% - 16px);
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .input-table {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 10px;
+    }
+
+    img {
+      height: 450px;
+    }
+
+    .imag {
+      display: grid;
+      place-content: center;
+      justify-items: center;
+    }
+
+    .inputs {
+      display: grid;
+      place-content: center;
+      /* border-left: solid 2px #919090; */
+      padding-left: 15px;
+    }
+
+    /*----------------------------------------footer---------------------------------*/
+    .footer {
+      margin: 40px 0 10px;
+      text-align: center;
+    }
+
+    .footer a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 22px;
+      margin: 0 10px;
+    }
+
+    .footer .face :hover {
+      color: #0330fa;
+    }
+
+    .footer .you :hover {
+      color: #fa0303;
+    }
+
+    .footer .twitter :hover {
+      color: #03d1fa;
+    }
+
+    .footer .linked :hover {
+      color: #0330fa;
+    }
+
+    .footer .insta :hover {
+      color: rgb(214, 41, 118);
+    }
+
+    .footer .location :hover {
+      color: #fa0303;
+    }
+
+    .footer hr {
+      background: #999;
+      height: 1px;
+      width: 100%;
+      border: 0;
+      margin: 20px 0;
+    }
+
+    .footer p {
+      padding-bottom: 15px;
+    }
+  </style>
+  <script src="https://kit.fontawesome.com/6e4651c5e7.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="container" style="display: flex; flex-direction: row;">
+    <div class="imag">
+      <img src="../static/images/Analysis-amico.png" alt="">
+      <div class="note">
+        <div class="green_head">Note:</div>
+        <p>Add in the results from the soil test report for the recommendations and feedback. </p>
+      </div>
+    </div>
+    <div class="inputs">
+      <h1>Add the tested results<br> from report:</h1>
+      <form method="post" action="{{ url_for('index') }}">
+        <div class="input-table">
+          <div>
+            <label for="Crop">crop:</label>
+            <select name="Crop">
+              <option value="Rice">Rice</option>
+              <option value="Groundnut">Groundnut</option>
+              <option value="Black Gram">Black Gram</option>
+              <option value="Bengal Gram">Bengal Gram</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="nitrogen">Nitrogen (N):</label>
+            <input type="number" required step="0.01" name="nitrogen" />
+          </div>
+          <div>
+            <label for="phosphorus">Phosphorus (P):</label>
+            <input type="number" required step="0.01" name="phosphorus" />
+          </div>
+          <div>
+            <label for="potassium">Potassium (K):</label>
+            <input type="number" required step="0.01" name="potassium" />
+          </div>
+          <div>
+            <label for="sulfur">Sulfur (S):</label>
+            <input type="number" required step="0.01" name="sulfur" />
+          </div>
+
+          <div>
+            <label for="zinc">Zinc (Zn):</label>
+            <input type="number" required step="0.01" name="zinc" />
+          </div>
+
+          <div>
+            <label for="iron">Iron (Fe):</label>
+            <input type="number" required step="0.01" name="iron" />
+          </div>
+
+          <div>
+            <label for="manganese">Manganese (Mn):</label>
+            <input type="number" required step="0.01" name="manganese" />
+          </div>
+
+          <div>
+            <label for="copper">Copper (Cu):</label>
+            <input type="number" required step="0.01" name="copper" />
+          </div>
+
+          <div>
+            <label for="calcium">Calcium (Ca):</label>
+            <input type="number" required step="0.01" name="calcium" />
+          </div>
+
+          <div>
+            <label for="magnesium">Magnesium (Mg):</label>
+            <input type="number" required step="0.01" name="magnesium" />
+          </div>
+
+          <div>
+            <label for="sodium">Sodium (Na):</label>
+            <input type="number" required step="0.01" name="sodium" />
+          </div>
+        </div>
+
+        <button type="submit" value="Submit">Submit</button>
+      </form>
+    </div>
+  </div>
+  <div class="footer">
+    <a href="#" class="face"><i class="fa-brands fa-facebook-f"></i></a>
+    <a href="#" class="you"><i class="fa-brands fa-youtube"></i></a>
+    <a href="#" class="twitter"><i class="fa-brands fa-twitter"></i></a>
+    <a href="#" class="linked"><i class="fa-brands fa-linkedin-in"></i></a>
+    <a href="#" class="insta"><i class="fa-brands fa-instagram"></i></a>
+    <a class="location"
+      href="https://www.google.com/maps/place/Dwaraka+Doss+Goverdhan+Doss+Vaishnav+College/@13.0737863,80.2122505,15z/data=!4m5!3m4!1s0x0:0x24732a5af8f16afd!8m2!3d13.0737863!4d80.2122505?shorturl=1">
+      <i class="fa-sharp fa-solid fa-location-dot"></i>
+    </a>
+    <hr>
+    <p>copyright ©️ 2023, DGVC Arumbakkam</p>
+  </div>
+  <script>
+    if (window.history.replaceState) {
+      window.history.replaceState(null, null, window.location.href);
+    }
+  </script>
+
+</body>
+
+</html>

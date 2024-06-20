@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Upload CSV</title>
+  <style>
+    @import "compass/css3";
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: rgb(238, 174, 202);
+      background: radial-gradient(circle,
+          rgba(238, 174, 202, 1) 0%,
+          rgba(148, 187, 233, 1) 100%);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset,
+        rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      margin-top: 20px;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .file-upload {
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      padding: 9px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 15px;
+      box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset,
+        rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;
+    }
+
+    .file-upload-green {
+      background-color: rgb(32, 175, 61);
+      color: #fff;
+      border: none;
+      padding: 9px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 15px;
+      box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset,
+        rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;
+    }
+
+    .file-name {
+      margin-top: 10px;
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 10px;
+      color: #333;
+    }
+
+    /* Loading slide styles */
+    .loading-slide {
+      display: none;
+    }
+
+    .wrapper {
+      width: 350px;
+      margin: -40px auto;
+    }
+
+    .wrapper .load-bar {
+      width: 100%;
+      height: 25px;
+      border-radius: 30px;
+      background: #dcdbd7;
+      position: relative;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8),
+        inset 0 2px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .wrapper .load-bar:hover .load-bar-inner,
+    .wrapper .load-bar:hover #counter {
+      animation-play-state: paused;
+    }
+
+    .wrapper .load-bar-inner {
+      height: 99%;
+      width: 0%;
+      border-radius: inherit;
+      position: relative;
+      background: #c2d7ac;
+      background: linear-gradient(#95ea3b, #8ada40);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1),
+        0 1px 5px rgba(0, 0, 0, 0.3), 0 4px 5px rgba(0, 0, 0, 0.3);
+      animation: loader 10s linear infinite;
+    }
+
+    .wrapper #counter {
+      position: absolute;
+      background: #eeeff3;
+      background: linear-gradient(#eeeff3, #cbcbd3);
+      padding: 5px 10px;
+      border-radius: 0.4em;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1),
+        0 2px 4px 1px rgba(0, 0, 0, 0.2), 0 1px 3px 1px rgba(0, 0, 0, 0.1);
+      left: -25px;
+      top: -50px;
+      font-size: 12px;
+      font-weight: bold;
+      width: 44px;
+      animation: counter 10s linear infinite;
+    }
+
+    .wrapper #counter:after {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #cbcbd3;
+      transform: rotate(45deg);
+      left: 50%;
+      margin-left: -4px;
+      bottom: -4px;
+      box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.2),
+        1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+      border-radius: 0 0 3px 0;
+    }
+
+    .wrapper h1 {
+      font-size: 28px;
+      padding: 20px 0 8px 0;
+    }
+
+    .wrapper p {
+      font-size: 13px;
+    }
+
+    @keyframes loader {
+      from {
+        width: 0%;
+      }
+
+      to {
+        width: 100%;
+      }
+    }
+
+    @keyframes counter {
+      from {
+        left: -25px;
+      }
+
+      to {
+        left: 323px;
+      }
+    }
+
+    .drag-drop-box {
+      border: 2px dashed #3498db;
+      padding: 20px;
+      width: 400px;
+      height: 250px;
+      text-align: center;
+      cursor: pointer;
+      margin-top: 20px;
+      border-radius: 5px;
+      transition: border-color 0.3s, background-color 0.3s;
+    }
+
+    .drag-drop-box.drag-over {
+      border-color: #27ae60;
+      background-color: rgba(39, 174, 96, 0.1);
+    }
+
+    #upload-form {
+      margin-top: -10px;
+      position: static;
+      margin-left: 80px;
+    }
+
+    /*----------------------------------------footer---------------------------------*/
+    .footer {
+      margin: -20px 0 10px;
+      text-align: center;
+    }
+
+    .footer a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 22px;
+      margin: 0 10px;
+    }
+
+    .footer .face :hover {
+      color: #0330fa;
+    }
+
+    .footer .you :hover {
+      color: #fa0303;
+    }
+
+    .footer .twitter :hover {
+      color: #03d1fa;
+    }
+
+    .footer .linked :hover {
+      color: #0330fa;
+    }
+
+    .footer .insta :hover {
+      color: rgb(214, 41, 118);
+    }
+
+    .footer .location :hover {
+      color: #fa0303;
+    }
+
+    .footer hr {
+      background: #999;
+      height: 1px;
+      width: 100%;
+      border: 0;
+      margin: 20px 0;
+    }
+
+    .footer p {
+      padding-bottom: 15px;
+    }
+  </style>
+  <script src="https://kit.fontawesome.com/6e4651c5e7.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+  <div class="container" style="display: flex; flex-direction:row ;">
+    <img src="../static/images/Add files-rafiki.png" style="height: 500px;">
+    <div style="display: grid;">
+      <div class="contents" style="display: grid; place-content: center;">
+        <h1>Upload .csv File</h1>
+        <form id="upload-form" method="post" action="/upload" enctype="multipart/form-data">
+          <label for="file-upload" class="file-upload">Choose File</label>
+          <input id="file-upload" type="file" name="file" accept=".csv" style="display: none" class="csv" />
+          <span class="file-name"> </span>
+          <button id="upload-button" type="submit" class="file-upload-green">
+            Upload
+          </button>
+        </form>
+        <div class="drag-drop-box" id="drag-drop-box">Drag & Drop File Here</div>
+        <div class="message" id="upload-message">{{ error }}</div>
+        <div class="message" id="upload-message"></div>
+      </div>
+      <!-- Loading slide -->
+      <div class="loading-slide" id="loading-slide">
+        <div class="wrapper">
+          <div class="load-bar">
+            <div class="load-bar-inner" data-loading="0"></div>
+          </div>
+          <h1>Training the Model</h1>
+          <p style="text-align: center">Please wait...</p>
+          <p style="text-align: center">
+            <b>Training with RandomForestRegressor model, Taking (Year,
+              District, Crop, Season, Area) in consideration</b>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <a href="#" class="face"><i class="fa-brands fa-facebook-f"></i></a>
+    <a href="#" class="you"><i class="fa-brands fa-youtube"></i></a>
+    <a href="#" class="twitter"><i class="fa-brands fa-twitter"></i></a>
+    <a href="#" class="linked"><i class="fa-brands fa-linkedin-in"></i></a>
+    <a href="#" class="insta"><i class="fa-brands fa-instagram"></i></a>
+    <a class="location"
+      href="https://www.google.com/maps/place/Dwaraka+Doss+Goverdhan+Doss+Vaishnav+College/@13.0737863,80.2122505,15z/data=!4m5!3m4!1s0x0:0x24732a5af8f16afd!8m2!3d13.0737863!4d80.2122505?shorturl=1">
+      <i class="fa-sharp fa-solid fa-location-dot"></i>
+    </a>
+    <hr>
+    <p>copyright ©️ 2023, DGVC Arumbakkam</p>
+  </div>
+  <!-- JavaScript code -->
+  <script>
+    var stopButtonPressed = false;
+
+    // Check if the page is being reloaded
+    window.addEventListener("beforeunload", function (e) {
+      if (!stopButtonPressed) {
+        // Show loading slide if it's not already hidden
+        document.getElementById("loading-slide").style.display = "block";
+      }
+      // Return null to allow the user to navigate away
+      return null;
+    });
+
+    // File upload and drag and drop code
+    document
+      .getElementById("file-upload")
+      .addEventListener("change", function () {
+        document.querySelector(".file-name").textContent = this.files[0].name;
+      });
+
+    document
+      .getElementById("upload-form")
+      .addEventListener("submit", function (e) {
+        if (document.getElementById("file-upload").files.length === 0) {
+          alert("Please upload a file.");
+          e.preventDefault(); // Prevent form submission
+          return;
+        }
+
+        document.getElementById("loading-slide").style.display = "block";
+        document.getElementById("upload-message").textContent = ""; // Clear any previous messages
+        document.getElementById("progress-bar").style.width = "100%";
+        document.getElementById("progress-bar").textContent = "99%";
+
+        setTimeout(function () {
+          if (!stopButtonPressed) {
+            document.getElementById("loading-slide").style.display = "none";
+          }
+        }, 2500);
+      });
+
+    var dragDropBox = document.getElementById("drag-drop-box");
+    dragDropBox.addEventListener("dragover", function (e) {
+      e.preventDefault();
+      dragDropBox.classList.add("drag-over");
+    });
+    dragDropBox.addEventListener("dragleave", function () {
+      dragDropBox.classList.remove("drag-over");
+    });
+    dragDropBox.addEventListener("drop", function (e) {
+      e.preventDefault();
+      if (e.dataTransfer.files.length > 1) {
+        alert("Please drop only one file.");
+        return;
+      }
+      var file = e.dataTransfer.files[0];
+      document.querySelector(".file-name").textContent = file.name;
+      document.getElementById("file-upload").files = e.dataTransfer.files;
+      dragDropBox.classList.remove("drag-over");
+    });
+
+    // drag and drop hidding 
+    document
+      .getElementById("upload-button")
+      .addEventListener("click", function () {
+        document.getElementById("drag-drop-box").style.display = "none";
+        document.getElementById("upload-form").style.marginLeft = "30px";
+      });
+
+    // Handle stop button click
+    window.addEventListener("unload", function () {
+      stopButtonPressed = true;
+      document.getElementById("loading-slide").style.display = "none";
+    });
+  </script>
+</body>
+
+</html>

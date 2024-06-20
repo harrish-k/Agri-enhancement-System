@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .summary {
+            width: 700px;
+            /* Set width of summary */
+            height: max-content;
+            /* Set height of summary */
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+
+            /* Ensure summary is above graphs */
+            position: absolute;
+            /* Position summary absolutely */
+            top: 50%;
+            /* Center vertically */
+            left: 60%;
+            /* Center horizontally */
+            transform: translate(-50%,
+                    -50%);
+            /* Center both vertically and horizontally */
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="summary" id="summary">
+        <h1>Prediction Summary</h1>
+        <div>
+            <h2>User Input</h2>
+            <p><strong>User selected District:</strong> {{ district }}</p>
+            <p><strong>User selected Crop:</strong> {{ crop }}</p>
+            <p><strong>User selected year for prediction:</strong> {{ year }}</p>
+            <p><strong>Season for prediction:</strong> {{ season }}</p>
+            <p><strong>Area given by the User:</strong> {{ area }} (ha)</p>
+            {% for season_type, season_predictions in predictions.items() %}
+            <h2>{{ season_type }} Prediction</h2>
+            <p>
+                <strong>Prediction:</strong> {{ season_predictions[0][1]|round(2)
+                }} (tons)
+            </p>
+            <p>
+                <strong>Yield:</strong> {{ (season_predictions[0][1] / area) |
+                round(2) }} (Kg/ha)
+            </p>
+            {% endfor %}
+        </div>
+        <h2>Average reduction = {{ average_reduction }}
+            
+        </h2>
+    </div>
+</body>
+
+</html>

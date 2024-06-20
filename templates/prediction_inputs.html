@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Get Inputs for Prediction</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: rgb(238, 174, 202);
+      background: radial-gradient(circle,
+          rgba(238, 174, 202, 1) 0%,
+          rgba(148, 187, 233, 1) 100%);
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+    }
+
+    .mini-body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 40px;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset,
+        rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;
+      text-align: left;
+      display: flex;
+      flex-direction: row;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input,
+    select {
+      padding: 8px;
+      margin-bottom: 10px;
+      width: calc(100% - 16px);
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .crop-list {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #090909;
+    }
+
+    .crop-list .lis {
+      width: 45%;
+      padding: 10px;
+      background-color: #fff;
+      /* border-radius: 4px; */
+      border: 1px solid #ccc;
+    }
+
+    .crop-list h2 {
+      margin-top: 0;
+    }
+
+    .Reference {
+      margin: auto auto;
+      width: 45%;
+      padding: 10px;
+    }
+
+    .message {
+      display: none;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+
+    img {
+      height: 500px;
+    }
+
+    /*----------------------------------------footer---------------------------------*/
+    .footer {
+      margin: 20px 0 10px;
+      text-align: center;
+    }
+
+    .footer a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 22px;
+      margin: 0 10px;
+    }
+
+    .footer .face :hover {
+      color: #0330fa;
+    }
+
+    .footer .you :hover {
+      color: #fa0303;
+    }
+
+    .footer .twitter :hover {
+      color: #03d1fa;
+    }
+
+    .footer .linked :hover {
+      color: #0330fa;
+    }
+
+    .footer .insta :hover {
+      color: rgb(214, 41, 118);
+    }
+
+    .footer .location :hover {
+      color: #fa0303;
+    }
+
+    .footer hr {
+      background: #999;
+      height: 1px;
+      width: 100%;
+      border: 0;
+      margin: 20px 0;
+    }
+
+    .footer p {
+      padding-bottom: 15px;
+    }
+  </style>
+</head>
+<script>
+  function validateInputs() {
+    var year = document.getElementById('year').value.trim();
+    var area = document.getElementById('area').value.trim();
+
+    if (year === '' || area === '') {
+      alert('Please enter values for year and area.');
+      return false;
+    }
+
+    if (isNaN(year) || isNaN(area)) {
+      alert('Please enter valid numeric values for year and area.');
+      return false;
+    }
+
+    document.getElementById('message').style.display = 'block';
+    return true;
+  }
+</script>
+<script src="https://kit.fontawesome.com/6e4651c5e7.js" crossorigin="anonymous"></script>
+
+<body>
+  <div class="mini-body">
+    <div class="container">
+      <div class="inputs">
+        <h1>Get Inputs for Prediction ({{ crop }})</h1>
+        <form method="post" action="/predict" onsubmit="return validateInputs() && showMessage()">
+          <label for="district">District:</label>
+          <select id="district" name="district" required>
+            {% for district in districts %}
+            <option value="{{ district }}">{{ district }}</option>
+            {% endfor %}
+          </select>
+          <label for="season">Season:</label>
+          <select id="season" name="season" required>
+            {% for season in seasons %}
+            <option value="{{ season }}">{{ season }}</option>
+            {% endfor %}
+            <option value="Both">Both</option>
+          </select>
+
+          <label for="year">Year of Prediction:</label>
+          <input type="number" id="year" name="year" required />
+
+          <label for="area">Area in (ha):</label>
+          <input type="number" id="area" name="area" required />
+
+          <button type="submit" onclick="showMessage()">Predict</button>
+        </form>
+        <p id="message" style="display: none" class="message">Model predicting results...</p>
+
+        <div class="crop-list">
+          <div class="Reference">
+            <h2>Reference crops</h2>
+          </div>
+          <div class="lis">
+            <h2>Rabi Crops:</h2>
+            <ul>
+              <li>Groundnut</li>
+              <li>Bengal Gram</li>
+            </ul>
+          </div>
+          <div class="lis">
+            <h2>Kharif Crops:</h2>
+            <ul>
+              <li>Rice</li>
+              <li>Black Gram</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <img src="../static/images/prediction.png" alt="">
+    </div>
+  </div>
+  <div class="footer">
+    <a href="#" class="face"><i class="fa-brands fa-facebook-f"></i></a>
+    <a href="#" class="you"><i class="fa-brands fa-youtube"></i></a>
+    <a href="#" class="twitter"><i class="fa-brands fa-twitter"></i></a>
+    <a href="#" class="linked"><i class="fa-brands fa-linkedin-in"></i></a>
+    <a href="#" class="insta"><i class="fa-brands fa-instagram"></i></a>
+    <a class="location"
+      href="https://www.google.com/maps/place/Dwaraka+Doss+Goverdhan+Doss+Vaishnav+College/@13.0737863,80.2122505,15z/data=!4m5!3m4!1s0x0:0x24732a5af8f16afd!8m2!3d13.0737863!4d80.2122505?shorturl=1">
+      <i class="fa-sharp fa-solid fa-location-dot"></i>
+    </a>
+    <hr>
+    <p>copyright ©️ 2023, DGVC Arumbakkam</p>
+  </div>
+</body>
+
+</html>

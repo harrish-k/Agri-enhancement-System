@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../static/css/final_dashboard.css">
+  <title>Final Dashboard</title>
+</head>
+
+<body>
+
+  <div class="container-big">
+    <div id="mySidebar" class="sidebar">
+      <button href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</button>
+      <div class="gbuttons" style="margin-top: -40px;">
+        <h4>About</h4>
+      <a href="#" class="sidebar-link" onclick="showContent('about', 'about')">About Me</a>
+      <a href="#" class="sidebar-link" onclick="showContent('aboutproj', 'aboutproj')">About Project</a>
+      <h4>Descriptive Graphs</h4>
+      <a href="#" class="sidebar-link"
+        onclick="showContent('graph', 'static/images/by_crops.html')">Production
+        Over Years</a>
+      <a href="#" class="sidebar-link"
+        onclick="showContent('graph', 'static/images/districts.html')">Production
+        by District</a>
+      <a href="#" class="sidebar-link"
+        onclick="showContent('graph', 'static/images/pie.html')">Production
+        by Crop</a>
+      <h4>Prediction Graphs and summary</h4>
+      <a href="#" class="sidebar-link"
+        onclick="showContent('graph', 'static/images/withoutred.html')">Prediction<br>(with
+        reduction)</a>
+      <a href="#" class="sidebar-link"
+        onclick="showContent('graph', 'static/images/withred.html')">Prediction<br>(without
+        reduction)</a>
+      <a href="#" class="sidebar-link"
+        onclick="showContent('graph', 'static/images/comparison_bars.html')">Comparison Graph</a>
+      <a href="#" class="sidebar-link" onclick="showContent('table', 'table')">Recommendations Table</a>
+      <a href="#" class="sidebar-link" onclick="showContent('summary', 'summary')">Summary</a>
+      </div>
+    </div>
+
+    <div id="main">
+      <button class="openbtn" id="openbtn" onclick="openNav()">☰ Open Sidebar</button>
+      <iframe id="contentFrame" src="static/images/production_prediction_bar_graph.html"></iframe>
+      <div id="sidebarTable" style="display: none; margin-bottom: 10px; padding-bottom: 10px">
+        {% include 'sidebar_table.html' %}
+      </div>
+      <div id="sidebarSummary" style="display: none;">
+        {% include 'summary.html' %}
+      </div>
+      <div id="sidebarAbout" style="display: none;">
+        {% include 'about.html' %}
+      </div>
+      <div id="sidebarAboutproj" style="display: none;">
+        {% include 'project.html' %}
+      </div>
+    </div>
+
+  </div>
+
+
+  <script>
+    function openNav() {
+      document.getElementById("mySidebar").style.width = "290px";
+      document.getElementById("main").style.marginLeft = "290px";
+      document.getElementById("mySidebar").style.padding = "60px 5px 5px 5px";
+      document.getElementById("openbtn").style.display = "none"; // Hide open button
+    }
+
+    function closeNav() {
+      document.getElementById("mySidebar").style.width = "0";
+      document.getElementById("main").style.marginLeft = "0";
+      document.getElementById("mySidebar").style.padding = "0px";
+      document.getElementById("openbtn").style.display = "block"; // Show open button
+    }
+
+    function showContent(type, url) {
+      if (type === 'table') {
+        document.getElementById("contentFrame").style.display = "none";
+        document.getElementById("sidebarTable").style.display = "block";
+        document.getElementById("sidebarSummary").style.display = "none";
+        document.getElementById("sidebarAbout").style.display = "none";
+        document.getElementById("sidebarAboutproj").style.display = "none";
+      } else if (type === 'summary') {
+        document.getElementById("contentFrame").style.display = "none";
+        document.getElementById("sidebarTable").style.display = "none";
+        document.getElementById("sidebarSummary").style.display = "block";
+        document.getElementById("sidebarAbout").style.display = "none";
+        document.getElementById("sidebarAboutproj").style.display = "none";
+      } else if (type === 'about') {
+        document.getElementById("contentFrame").style.display = "none";
+        document.getElementById("sidebarTable").style.display = "none";
+        document.getElementById("sidebarSummary").style.display = "none";
+        document.getElementById("sidebarAbout").style.display = "block";
+        document.getElementById("sidebarAboutproj").style.display = "none";
+      } else if (type === 'aboutproj') {
+        document.getElementById("contentFrame").style.display = "none";
+        document.getElementById("sidebarTable").style.display = "none";
+        document.getElementById("sidebarSummary").style.display = "none";
+        document.getElementById("sidebarAbout").style.display = "none";
+        document.getElementById("sidebarAboutproj").style.display = "block";
+      } else {
+        document.getElementById("contentFrame").src = url;
+        document.getElementById("contentFrame").style.display = "block";
+        document.getElementById("sidebarTable").style.display = "none";
+        document.getElementById("sidebarSummary").style.display = "none";
+        document.getElementById("sidebarAbout").style.display = "none";
+        document.getElementById("sidebarAboutproj").style.display = "none";
+      }
+    }
+
+
+    window.onload = function () {
+      showContent('graph', 'static/images/comparison_bars.html');
+      openNav();
+    };
+
+  </script>
+
+</body>
+
+</html>

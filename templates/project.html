@@ -1,0 +1,386 @@
+<html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url("https://fonts.googleapis.com/css?family=DM+Sans:400,500|Jost:400,500,600&display=swap");
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      color: #2b2c48;
+      font-family: "Jost", sans-serif;
+      background: rgb(241, 144, 186);
+      background: linear-gradient(74deg, rgba(241, 144, 186, 1) 27%, rgba(70, 146, 236, 1) 100%);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      min-height: 100vh;
+      display: flex;
+      flex-wrap: wrap;
+      padding: 20px;
+    }
+
+    .card {
+      width: 700px;
+      margin: -5px auto;
+      overflow-y: hidden;
+      position: relative;
+      z-index: 1;
+      overflow-x: hidden;
+      background-color: rgba(255, 255, 255, 1);
+      display: flex;
+      transition: 0.3s;
+      flex-direction: column;
+      border-radius: 10px;
+    }
+
+    .card[data-state="#about"] {
+      height: 800px;
+      
+      .card-main {
+        padding-top: 0;
+      }
+    }
+
+    .card.is-active {
+      .card-header {
+        height: 80px;
+      }
+
+      .card-cover {
+        height: 100px;
+        top: -50px;
+      }
+
+      .card-avatar {
+        transform: none;
+        left: 20px;
+        width: 50px;
+        height: 50px;
+        bottom: 10px;
+      }
+
+      .card-fullname,
+      .card-jobtitle {
+        left: 86px;
+        transform: none;
+      }
+
+      .card-fullname {
+        bottom: 18px;
+        font-size: 19px;
+      }
+
+      .card-jobtitle {
+        bottom: 16px;
+        letter-spacing: 1px;
+        font-size: 10px;
+      }
+    }
+
+    .card-header {
+      position: relative;
+      display: flex;
+      height: 200px;
+      flex-shrink: 0;
+      width: 100%;
+      transition: 0.3s;
+
+      * {
+        transition: 0.3s;
+      }
+    }
+
+    .card-cover {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      height: 160px;
+      top: -20%;
+      left: 0;
+      will-change: top;
+      background-size: cover;
+      background-position: center;
+      filter: blur(30px);
+      transform: scale(1.2);
+      transition: 0.5s;
+    }
+
+    .card-avatar {
+      width: 100px;
+      height: 100px;
+      box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+      border-radius: 50%;
+      object-position: center;
+      object-fit: cover;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%) translateY(-90px);
+    }
+
+    .card-fullname {
+      position: absolute;
+      bottom: 0;
+      font-size: 22px;
+      font-weight: 700;
+      text-align: center;
+      white-space: nowrap;
+      transform: translateY(-10px) translateX(-50%);
+      left: 50%;
+    }
+
+    .card-jobtitle {
+      position: absolute;
+      bottom: 0;
+      font-size: 11px;
+      white-space: nowrap;
+      font-weight: 500;
+      opacity: 0.7;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin: 0;
+      left: 50%;
+      transform: translateX(-50%) translateY(-7px);
+    }
+
+    .card-main {
+      position: relative;
+      flex: 1;
+      display: flex;
+      padding-top: 10px;
+      flex-direction: column;
+    }
+
+    .card-subtitle {
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .card-content {
+      padding: 20px;
+    }
+
+    .card-desc {
+      line-height: 1.6;
+      color: #636b6f;
+      font-size: 14px;
+      margin: 0;
+      font-weight: 400;
+      font-family: "DM Sans", sans-serif;
+    }
+
+    .card-section {
+      display: none;
+
+      &.is-active {
+        display: block;
+        animation: fadeIn 0.6s both;
+      }
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translatey(40px);
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .card-timeline {
+      margin-top: 30px;
+      position: relative;
+
+      &:after {
+        background: linear-gradient(to top,
+            rgba(134, 214, 243, 0) 0%,
+            rgba(81, 106, 204, 1) 100%);
+        content: "";
+        left: 42px;
+        width: 2px;
+        top: 0;
+        height: 100%;
+        position: absolute;
+        content: "";
+      }
+    }
+
+    .card-item {
+      position: relative;
+      padding-left: 60px;
+      padding-right: 20px;
+      padding-bottom: 30px;
+      z-index: 1;
+
+      &:last-child {
+        padding-bottom: 5px;
+      }
+
+      &:after {
+        content: attr(data-year);
+        width: 10px;
+        position: absolute;
+        top: 0;
+        left: 37px;
+        width: 8px;
+        height: 8px;
+        line-height: 0.6;
+        border: 2px solid #fff;
+        font-size: 11px;
+        text-indent: -35px;
+        border-radius: 50%;
+        color: rgba(#868686, 0.7);
+        background: linear-gradient(to bottom,
+            lighten(#516acc, 20%) 0%,
+            #516acc 100%);
+      }
+    }
+
+    .card-item-title {
+      font-weight: 500;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .card-item-desc {
+      font-size: 13px;
+      color: #6f6f7b;
+      line-height: 1.5;
+      font-family: "DM Sans", sans-serif;
+    }
+
+    .card-contact-wrapper {
+      margin-top: 20px;
+    }
+
+    .card-contact {
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      color: #6f6f7b;
+      font-family: "DM Sans", sans-serif;
+      line-height: 1.6;
+      cursor: pointer;
+
+      &+& {
+        margin-top: 16px;
+      }
+
+      svg {
+        flex-shrink: 0;
+        width: 30px;
+        min-height: 34px;
+        margin-right: 12px;
+        transition: 0.3s;
+        padding-right: 12px;
+        border-right: 1px solid #dfe2ec;
+      }
+    }
+
+    .contact-me {
+      border: 0;
+      outline: none;
+      background: linear-gradient(to right,
+          rgba(83, 200, 239, 0.8) 0%,
+          rgba(81, 106, 204, 0.8) 96%);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+      color: #fff;
+      padding: 12px 16px;
+      width: 100%;
+      border-radius: 5px;
+      margin-top: 25px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: "Jost", sans-serif;
+      transition: 0.3s;
+    }
+  </style>
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="card" data-state="#about">
+    <div class="card-header">
+      <div class="card-cover" style="background: rgb(241, 144, 186);
+        background: linear-gradient(74deg, rgba(241, 144, 186, 1) 27%, rgba(70, 146, 236, 1) 100%);">
+      </div>
+      <img class="card-avatar" src="../static/images/machine-learning_15188990.png" alt="avatar" />
+      <h1 class="card-fullname">Agriculture enhancement system</h1>
+      <h2 class="card-jobtitle">Using Machine Learning</h2>
+    </div>
+    <div class="card-main">
+      <div class="card-section is-active" id="about">
+        <div class="card-content">
+          <div class="card-subtitle">ABOUT</div>
+          <p class="card-desc">"The project aims to revolutionize agriculture by using machine learning and AI to
+            predict crop yields, manage soil nutrients, and provide farmers with personalized recommendations, supported
+            by a user-friendly chatbot interface."
+          </p>
+        </div>
+        <div class="card-content">
+          <div class="card-subtitle">WORK FLOW</div>
+          <div class="card-timeline">
+            <div class="card-item" data-year="Mod 1">
+              <div class="card-item-title">Hero section</div>
+              <div class="card-item-desc">Responsible for the encomposing brand expreience.</div>
+            </div>
+            <div class="card-item" data-year="Mod 2">
+              <div class="card-item-title">Test Result Inputs</div>
+              <div class="card-item-desc">Onboarding illustrations for App.</div>
+            </div>
+            <div class="card-item" data-year="Mod 3">
+              <div class="card-item-title">Recommendations and reports</div>
+              <div class="card-item-desc">Developed new conversion funnels and disrupt.</div>
+            </div>
+            <div class="card-item" data-year="Mod 4">
+              <div class="card-item-title">File Upload and Prediction input</div>
+              <div class="card-item-desc">Disrupt stumptown retro everyday carry unicorn.</div>
+            </div>
+            <div class="card-item" data-year="Mod 5">
+              <div class="card-item-title">Final Dashboard</div>
+              <div class="card-item-desc">Disrupt stumptown retro everyday carry unicorn.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const buttons = document.querySelectorAll(".card-buttons button");
+    const sections = document.querySelectorAll(".card-section");
+    const card = document.querySelector(".card");
+
+    const handleButtonClick = (e) => {
+      const targetSection = e.target.getAttribute("data-section");
+      const section = document.querySelector(targetSection);
+      targetSection !== "#about"
+        ? card.classList.add("is-active")
+        : card.classList.remove("is-active");
+      card.setAttribute("data-state", targetSection);
+      sections.forEach((s) => s.classList.remove("is-active"));
+      buttons.forEach((b) => b.classList.remove("is-active"));
+      e.target.classList.add("is-active");
+      section.classList.add("is-active");
+    };
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", handleButtonClick);
+    });
+  </script>
+</body>
+
+</html>
+
+</html>

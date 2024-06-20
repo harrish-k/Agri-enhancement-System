@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../static/css/style.css">
+  <script src="https://kit.fontawesome.com/6e4651c5e7.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,700,1,200" />
+</head>
+
+<body>
+  <script type="importmap">
+        {
+          "imports": {
+            "@google/generative-ai": "https://esm.run/@google/generative-ai"
+          }
+        }
+      </script>
+  <script type="module">
+    import { GoogleGenerativeAI } from "@google/generative-ai";
+
+    const genAI = new GoogleGenerativeAI(
+      "AIzaSyBth4yYUtilAqvkM3MLn0ROYHMZnRtyj3c"
+    ); // Replace with your actual API key
+
+    const chatbotToggler = document.querySelector(".chatbot-toggler");
+    const closeBtn = document.querySelector(".close-btn");
+    const chatbox = document.querySelector(".chatbox");
+    const chatInput = document.querySelector(".chat-input textarea");
+    const sendChatBtn = document.querySelector(".chat-input span");
+
+    let conversationContext = [];
+
+    async function runModel(prompt) {
+      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = await response.text();
+      return text;
+    }
+
+    function appendMessageToChat(message, className) {
+      const chatLi = document.createElement("li");
+      chatLi.classList.add("chat", className);
+      if (className === "outgoing") {
+        chatLi.innerHTML = `<p>${message}</p>`;
+      } else {
+        chatLi.innerHTML = `<span class="material-symbols-outlined">smart_toy</span><p>${message}</p>`;
+      }
+      chatbox.appendChild(chatLi);
+      chatbox.scrollTo(0, chatbox.scrollHeight);
+    }
+
+    async function handleUserMessage(userMessage) {
+      appendMessageToChat(userMessage, "outgoing");
+      const prompt = conversationContext.join(" ") + userMessage;
+      const answer = await runModel(prompt);
+      appendMessageToChat(answer, "incoming");
+      conversationContext.push(userMessage, answer);
+    }
+
+    function handleChat() {
+      const userMessage = chatInput.value.trim();
+      if (!userMessage) return;
+      chatInput.value = "";
+
+      handleUserMessage(userMessage);
+    }
+
+    sendChatBtn.addEventListener("click", handleChat);
+    closeBtn.addEventListener("click", () =>
+      document.body.classList.remove("show-chatbot")
+    );
+    chatbotToggler.addEventListener("click", () =>
+      document.body.classList.toggle("show-chatbot")
+    );
+  </script>
+  <button class="chatbot-toggler">
+    <span class="material-symbols-rounded" style="font-size: 40px;">support_agent</span>
+    <span class="material-symbols-outlined">close</span>
+  </button>
+  <div class="chatbot">
+    <header>
+      <h2>Chatbot - Gemini intergrated</h2>
+      <span class="close-btn material-symbols-outlined">close</span>
+    </header>
+    <ul class="chatbox">
+      <li class="chat incoming">
+        <span class="material-symbols-outlined" style="font-size: 30px;">smart_toy</span>
+        <p>Hi there 👋<br />How can I help you today?</p>
+      </li>
+    </ul>
+    <div class="chat-input">
+      <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
+      <span id="send-btn" class="material-symbols-rounded">send</span>
+    </div>
+  </div>
+  <!-- Start Landing Page -->
+  <div class="landing-page">
+    <div class="content">
+      <div class="container">
+        <div class="info">
+          <h1>Agricultural Enhancement Using Machine Learning.</h1>
+          <p>Project which uses the tested soil results to calculate and predict the yield for the future for the user given data. 
+          </p>
+          <button class="redirectBtn">
+            <a style="color: white;" href="{{ url_for('check_value_page') }}">Go for Recommendations</a>
+          </button>
+        </div>
+        <div class="image">
+          <img src="../static/images/11668759_20945347.jpg">
+        </div>
+      </div>
+    </div>
+  </div>
+  <main class="content2">
+    <h2>What Is Soil Testing?</h2>
+    <p>
+      It is the farmland analysis for multiple parameters like chemical
+      content, toxicity, pH level, salinity, earth-dwelling biota, etc. Such
+      tests also provide information on chemical contamination, humic or
+      organic content, electric conductivity, cation exchange capacity, and
+      other physical and chemical properties.
+    </p>
+
+    <h2>Types Of Soil Tests</h2>
+    <p>
+      The analysis type depends on the explored components or properties of
+      the field ground that may beneficially or adversely impact crop
+      development. The most frequently-used types analyze and measure:
+    </p>
+    <ul class="lists">
+      <li>mineral content,</li>
+      <li>pH level,</li>
+      <li>soil moisture,</li>
+      <li>salinity,</li>
+      <li>pesticides and chemical contamination,</li>
+      <li>structure and texture, etc.</li>
+    </ul>
+
+    <h2>Soil Nutrient Testing</h2>
+    <p>
+      Valuable information on nutrients content allows accurate
+      fertilization to support plant needs within precision agriculture
+      implementations. This is why the chemical test for soil nutrients is
+      the most common.
+    </p>
+    <p>
+      Primarily, soil tests report on the content of nitrogen (N),
+      phosphorus (P), and potassium (K), which are the most important
+      nutrients for crops. Secondary nutrients to examine are calcium (Ca),
+      sulfur (S), and magnesium (Mg). An extended test also includes minor
+      elements like iron (Fe), manganese (Mg), boron (B), molybdenum (Mo),
+      and others.
+    </p>
+    <p>
+      To test soil nutrient content, a sample is added to an extractant
+      solution and mixed (typically by shaking). Then, the liquid content is
+      filtered and analyzed for chemical elements’ presence and
+      concentrations (converted to dry matter). The obtained number is the
+      soil-test index.
+    </p>
+    <p>
+      Why is it important to test soil for nutrient levels? Availability of
+      correct amounts of nutrients at certain phenological stages is vital
+      for plants. A nutrient imbalance like nitrogen deficiency severely
+      impedes plant growth, while high concentrations cause plant wilting,
+      fertilizer burns, or abnormal development.
+    </p>
+
+    <h2>Soil Acidity Test (pH)</h2>
+    <p>
+      Proper pH in the field is essential for plant productivity, and either
+      too high or too low pH will adversely affect crop growth. Testing pH
+      of soil, one calculates its hydrogen ions. pH values may range from 0
+      to 14. The neutral value is 7, lower levels are for acidity, and
+      higher than 7 mean alkalinities. Acidic or alkaline fields are treated
+      correspondingly. For example, pH can be raised with lime, and an
+      accurate pH test helps determine its required quantity.
+    </p>
+    <p>
+      How to test pH level in soil? Various kits allow measuring pH right in
+      the field, but more accurate results are provided by state or private
+      laboratories.
+    </p>
+
+    <h2>Soil Salinity Test</h2>
+    <p>
+      In saline fields, plants suffer from osmotic stresses due to poor
+      water absorption. Soil salinity testing helps understand the
+      suitability of lands for agricultural activities. Field salinity can
+      be analyzed through:
+    </p>
+    <ul class="lists">
+      <li>
+        evaporation of total soluble salts (TSS) from the ground-water
+        extract;
+      </li>
+      <li>
+        measuring the electric conductivity (EC) of a saturated paste
+        extract or a distilled water-earth dilution.
+      </li>
+    </ul>
+    <p>
+      An electric conductivity soil test is performed in the field or a
+      designated laboratory.
+    </p>
+    <p>
+      An EC soil test can also show the quantity of crop-available nitrogen
+      in some non-saline lands.
+    </p>
+    <h2>Physical Soil Testing For Texture And Structure</h2>
+    <p>
+      Apart from the chemical content, agricultural soil testing also
+      analyzes the soil type and its physical properties like texture,
+      structure, and moisture.
+    </p>
+    <p>
+      The main components are clay, sand, and silt, and their proportions
+      define the ground texture and its ability to retain nutrients with
+      moisture. For example, sandy fields dry faster than clay ones, so a
+      soil texture test helps in precision irrigation and fertigation
+      planning.
+    </p>
+    <p>
+      Soil structure describes the size of its parts and pore spaces, which
+      affect the flow of water and air in the earth. Clay fields are finer,
+      and their pore spaces are small. Therefore, they are prone to
+      compaction and require regular aeration.
+    </p>
+    <p>
+      Soil type tests also assist in determining crop type suitability.
+      Thus, water-loving plants are suitable for clay fields, while
+      drought-tolerant species are good for dry sandy ones.
+    </p>
+
+    <h2>Soil Moisture Testing</h2>
+    <p>
+      Water is essential for plant growth, and vegetation cannot develop
+      properly under a lack of ground moisture. When the field’s surface is
+      dry, it can be noticed visually; yet accurate water rates are measured
+      with soil moisture sensors or in the laboratory. A soil moisture
+      content test reports water availability for plants or their
+      dehydration. High-temperature moisture evaporation from
+    </p>
+
+    <h2>How To Get The Soil Tested?</h2>
+    <p>
+      Deciding on how to conduct a soil test, you can choose any options:
+    </p>
+    <ul class="lists">
+      <li>Do it yourself with special kits.</li>
+      <li>
+        Send samples for a professional analysis to a state or private
+        laboratory. Soil test procedures in some local labs are free.
+      </li>
+      <li>
+        Hire a company that will cover the whole process from sampling to
+        field amelioration recommendations.
+      </li>
+    </ul>
+    <p>
+      Regular soil testing is essential for maintaining soil health and
+      optimizing crop productivity. By understanding the various types of
+      soil tests and their importance, farmers and agricultural
+      professionals can make informed decisions to improve soil fertility
+      and crop yields.
+    </p>
+  </main>
+  </div>
+  <div class="footer">
+    <a href="#" class="face"><i class="fa-brands fa-facebook-f"></i></a>
+    <a href="#" class="you"><i class="fa-brands fa-youtube"></i></a>
+    <a href="#" class="twitter"><i class="fa-brands fa-twitter"></i></a>
+    <a href="#" class="linked"><i class="fa-brands fa-linkedin-in"></i></a>
+    <a href="#" class="insta"><i class="fa-brands fa-instagram"></i></a>
+    <a class="location"
+      href="https://www.google.com/maps/place/Dwaraka+Doss+Goverdhan+Doss+Vaishnav+College/@13.0737863,80.2122505,15z/data=!4m5!3m4!1s0x0:0x24732a5af8f16afd!8m2!3d13.0737863!4d80.2122505?shorturl=1">
+      <i class="fa-sharp fa-solid fa-location-dot"></i>
+    </a>
+    <hr>
+    <p>copyright ©️ 2023, DGVC Arumbakkam</p>
+  </div>
+</body>
+
+</html>

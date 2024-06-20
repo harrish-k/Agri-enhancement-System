@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/css/recommendations_page.css">
+</head>
+
+<body>
+    <div class="container" style="height: 80%;">
+        <div class="results-table">
+            <h1>Results and Recommendations ({{crop}})</h1>
+            <table>
+                <tr>
+                    <th>Element</th>
+                    <th>Report Value</th>
+                    <th>Status</th>
+                    <th>Normal Rate, ppm</th>
+                    <th>Symptoms</th>
+                    <th>Possible Fertilizers</th>
+                    <th>Application</th>
+                </tr>
+                {% for result in results %}
+                <tr>
+                    <td>{{ result['Element'] }}</td>
+                    <td>{{ result['Input Value'] }}</td>
+                    <td>
+                        {% if result['Status'] == 'Within the range' %} <img class="icons"
+                            src="../static/images/check-mark.png" alt="">
+                        {% elif result['Status'] == 'Above the range' %} <img class="icons"
+                            src="../static/images/arrow.png" alt="">
+                        {% elif result['Status'] == 'Below the range' %} <img class="icons"
+                            src="../static/images/down.png" alt="">
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if crop == 'Rice' %}
+                        {% if result['Element'] == 'Nitrogen (N)' %} 150 - 250 {% elif
+                        result['Element'] == 'Phosphorus (P)' %} 40 - 80 {% elif
+                        result['Element'] == 'Potassium (K)' %} 100 - 200 {% elif
+                        result['Element'] == 'Sulfur (S)' %} 10 - 20 {% elif
+                        result['Element'] == 'Zinc (Zn)' %} 1 - 2 {% elif
+                        result['Element'] == 'Iron (Fe)' %} 20 - 80 {% elif
+                        result['Element'] == 'Manganese (Mn)' %} 1 - 5 {% elif
+                        result['Element'] == 'Copper (Cu)' %} 0.1 - 1 {% elif
+                        result['Element'] == 'Calcium (Ca)' %} 400 - 1000 {% elif
+                        result['Element'] == 'Magnesium (Mg)' %} 50 - 200 {% elif
+                        result['Element'] == 'Sodium (Na)' %} 4 - 20 {% endif %}
+                        {% elif crop == 'Groundnut' %}
+                        {% if result['Element'] == 'Nitrogen (N)' %} 40 - 50 {% elif
+                        result['Element'] == 'Phosphorus (P)' %} 20 - 30 {% elif
+                        result['Element'] == 'Potassium (K)' %} 30 - 40 {% elif
+                        result['Element'] == 'Sulfur (S)' %} 10 - 15 {% elif
+                        result['Element'] == 'Zinc (Zn)' %} 1 - 2 {% elif
+                        result['Element'] == 'Iron (Fe)' %} 40 - 80 {% elif
+                        result['Element'] == 'Manganese (Mn)' %} 2 - 5 {% elif
+                        result['Element'] == 'Copper (Cu)' %} 0.2 - 1 {% elif
+                        result['Element'] == 'Calcium (Ca)' %} 1000 - 2000 {% elif
+                        result['Element'] == 'Magnesium (Mg)' %} 200 - 400 {% elif
+                        result['Element'] == 'Sodium (Na)' %} 4 - 20 {% endif %}
+                        {% elif crop == 'Black Gram' %}
+                        {% if result['Element'] == 'Nitrogen (N)' %} 25 - 35 {% elif
+                        result['Element'] == 'Phosphorus (P)' %} 40 - 50 {% elif
+                        result['Element'] == 'Potassium (K)' %} 20 - 30 {% elif
+                        result['Element'] == 'Sulfur (S)' %} 10 - 15 {% elif
+                        result['Element'] == 'Zinc (Zn)' %} 1 - 2 {% elif
+                        result['Element'] == 'Iron (Fe)' %} 40 - 80 {% elif
+                        result['Element'] == 'Manganese (Mn)' %} 2 - 5 {% elif
+                        result['Element'] == 'Copper (Cu)' %} 0.2 - 1.0 {% elif
+                        result['Element'] == 'Calcium (Ca)' %} 1000 - 2000 {% elif
+                        result['Element'] == 'Magnesium (Mg)' %} 200 - 400 {% elif
+                        result['Element'] == 'Sodium (Na)' %} 4 - 20 {% endif %}
+                        {% elif crop == 'Bengal Gram' %}
+                        {% if result['Element'] == 'Nitrogen (N)' %} 25 - 35 {% elif
+                        result['Element'] == 'Phosphorus (P)' %} 40 - 50 {% elif
+                        result['Element'] == 'Potassium (K)' %} 20 - 30 {% elif
+                        result['Element'] == 'Sulfur (S)' %} 10 - 15 {% elif
+                        result['Element'] == 'Zinc (Zn)' %} 1 - 2 {% elif
+                        result['Element'] == 'Iron (Fe)' %} 40 - 80 {% elif
+                        result['Element'] == 'Manganese (Mn)' %} 2 - 5 {% elif
+                        result['Element'] == 'Copper (Cu)' %} 0.2 - 1.0 {% elif
+                        result['Element'] == 'Calcium (Ca)' %} 1000 - 2000 {% elif
+                        result['Element'] == 'Magnesium (Mg)' %} 200 - 400 {% elif
+                        result['Element'] == 'Sodium (Na)' %} 4 - 20 {% endif %}
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if result['Status'] == 'Within the range' %} - {% else %} {% for recommendation in
+                        recommendations %} {%
+                        if recommendation['Element'] == result['Element'] and recommendation['Crop'] == crop %} {{
+                        recommendation['Symptoms'] }} {% endif %} {% endfor %} {% endif %}
+                    </td>
+                    <td>
+                        {% if result['Status'] == 'Within the range' %} - {% else %} {% for recommendation in
+                        recommendations %} {%
+                        if recommendation['Element'] == result['Element'] and recommendation['Crop'] == crop %} {{
+                        recommendation['Possible Fertilizers'] }} {% endif %} {% endfor %} {% endif %}
+                    </td>
+                    <td>
+                        {% if result['Status'] == 'Within the range' %} - {% else %} {% for recommendation in
+                        recommendations %} {%
+                        if recommendation['Element'] == result['Element'] and recommendation['Crop'] == crop%} {{
+                        recommendation['Application'] }} {% endif %} {% endfor %} {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
